@@ -24,3 +24,14 @@ typedef struct {
     unsigned int biClrUsed;
     unsigned int biClrImportant;
 } BITMAPINFOHEADER;
+
+
+
+// Define custom structure
+
+// Linked list of pixels
+typedef struct PIXEL_LINK {
+  int xPos;
+  int yPos;
+  struct PIXEL_LINK *nextPixel;
+} PIXEL_LINK;
