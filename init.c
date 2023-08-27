@@ -195,3 +195,15 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
   //while(headPixel != currentPixel);
   return headPixel;
 }
+
+void cleanup(PIXEL_LINK* sortedHead)
+{
+  PIXEL_LINK* pl = sortedHead;
+  while (pl != 0x0)
+  {
+    PIXEL_LINK* oldPl = pl;
+    pl = pl->nextPixel;
+    free(oldPl);
+  }
+
+}
