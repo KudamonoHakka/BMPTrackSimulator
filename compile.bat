@@ -1,1 +1,1 @@
-gcc main.c init.c -std=c99 -o main.exe
+gcc main.c init.c agent.c -std=c99 -o main.exe

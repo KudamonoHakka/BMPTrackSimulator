@@ -1,6 +1,11 @@
+#ifndef MAIN_H_   /* Include guard */
+#define MAIN_H_
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 
 #pragma pack(1)
 
@@ -37,10 +42,4 @@ typedef struct PIXEL_LINK {
   struct PIXEL_LINK *nextPixel;
 } PIXEL_LINK;
 
-typedef struct AGENT{
-  int xPos;
-  int yPos;
-  double angle;
-  int xViewRange;
-  int yViewRange;
-} AGENT;
+#endif

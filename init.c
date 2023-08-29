@@ -1,5 +1,6 @@
 #include "main.h"
 #include "init.h"
+#include "agent.h"
 
 unsigned char* readTrack(char* fileName, int* w, int* h)
 {
