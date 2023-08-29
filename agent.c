@@ -75,7 +75,7 @@ void printViewport(AGENT* agent, double* aScreenshot)
     for (int x = -agent->xViewRange; x <= agent->xViewRange; x++)
     {
       int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1) + (agent->xViewRange + x);
-      printf("%d", aScreenshot[viewBufferIndex] > 0.0);
+      printf("%d", !(aScreenshot[viewBufferIndex] > 0.0));
     }
     printf("\n");
   }
