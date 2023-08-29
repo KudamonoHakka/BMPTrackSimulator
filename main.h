@@ -36,3 +36,11 @@ typedef struct PIXEL_LINK {
   int yPos;
   struct PIXEL_LINK *nextPixel;
 } PIXEL_LINK;
+
+typedef struct AGENT{
+  int xPos;
+  int yPos;
+  double angle;
+  int xViewRange;
+  int yViewRange;
+} AGENT;

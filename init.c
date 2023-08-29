@@ -92,6 +92,10 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
               redHead = pl;
 
             redCurrent = pl;
+
+            // We want the agent to read this as a black pixel
+            for (int i = 0; i < 3; i++)
+              pixelData[index + i] = 0x0;
           }
           else
           {
@@ -101,6 +105,9 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
               greenHead = pl;
 
             greenCurrent = pl;
+            // We want the agent to read this as a black pixel
+            for (int i = 0; i < 3; i++)
+              pixelData[index + i] = 0x0;
           }
 
 
