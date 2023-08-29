@@ -7,10 +7,13 @@ typedef struct AGENT{
   double angle;
   int xViewRange;
   int yViewRange;
+  double stepSize;
+  double rotStepSize;
 } AGENT;
 
 double twoPointAngle(int xPos1, int yPos1, int xPos2, int yPos2);
 double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height);
 double degreeRadConvert(double inp, char isRad);
+void printViewport(AGENT* agent, double* aScreenshot);
 
 #endif

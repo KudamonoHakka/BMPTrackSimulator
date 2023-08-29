@@ -67,3 +67,16 @@ double twoPointAngle(int xPos1, int yPos1, int xPos2, int yPos2)
   // Don't spit a negative result
   return (theta >= 0)? theta : theta + 360;
 }
+
+void printViewport(AGENT* agent, double* aScreenshot)
+{
+  for (int y = -agent->yViewRange; y <= agent->yViewRange; y++)
+  {
+    for (int x = -agent->xViewRange; x <= agent->xViewRange; x++)
+    {
+      int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1) + (agent->xViewRange + x);
+      printf("%d", aScreenshot[viewBufferIndex] > 0.0);
+    }
+    printf("\n");
+  }
+}
