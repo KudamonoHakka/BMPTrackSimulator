@@ -77,8 +77,6 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
         // Print out values if they're a landmark; else set to average RGB values
         if (red + green + blue == 255)
         {
-          //printf("Pixel at (%d, %d): R=%u, G=%u, B=%u\n", x, y, red, green, blue);
-
           // Create new pixel link in chain
           PIXEL_LINK* pl = malloc(sizeof(PIXEL_LINK));
           pl->xPos = x;
@@ -132,10 +130,6 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           for (int i = 0; i < 3; i++)
             pixelData[index + i] = avg;
 
-        // Extract new RBG values
-        blue = pixelData[index];
-        green = pixelData[index + 1];
-        red = pixelData[index + 2];
     }
   }
   PIXEL_LINK** return_array = malloc(sizeof(PIXEL_LINK*)*2);
@@ -215,12 +209,12 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
     currentPixel->nextPixel = 0x0;
 
   } while(linkHeads[listIndex] != 0x0 && linkHeads[listIndex^0x1] != 0x0);
-  //while(headPixel != currentPixel);
   return headPixel;
 }
 
 void cleanup(PIXEL_LINK* sortedHead)
 {
+  // Go through linked lists and free all links
   PIXEL_LINK* pl = sortedHead;
   while (pl != 0x0)
   {

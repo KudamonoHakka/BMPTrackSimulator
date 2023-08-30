@@ -36,7 +36,6 @@ typedef struct {
 
 // Define custom structure
 
-// Linked list of pixels
 typedef struct PIXEL_LINK {
   int xPos;
   int yPos;
