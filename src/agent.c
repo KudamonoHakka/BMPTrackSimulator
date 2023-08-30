@@ -74,7 +74,7 @@ void printViewport(AGENT* agent, double* aScreenshot)
   }
 }
 
-void outputImage(double* aScreen, AGENT* agent, double error)
+void outputImage(double* aScreen, AGENT* agent, double error, int imageWidth, int imageHeight)
 {
   FILE *f;
 
@@ -113,7 +113,7 @@ void outputImage(double* aScreen, AGENT* agent, double error)
 
   // Create appropriate file name and save
   char* fileName = malloc(100);
-  sprintf(fileName, "img\\%.2f (%x).bmp", error, (int)(agent->xPos * agent->yPos * (agent->angle + 1.5)));
+  sprintf(fileName, "img\\%.2f (%x) [%x].bmp", error, (int)(agent->xPos * agent->yPos * (agent->angle + 1.5)), imageWidth * imageHeight);
   f = fopen(fileName,"wb");
   free(fileName);
 
@@ -154,7 +154,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     {
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
-      outputImage(aScreen, agent, errorCalculate(deltaTheta));
+      outputImage(aScreen, agent, errorCalculate(deltaTheta), width, height);
 
       free(aScreen);
 
@@ -183,7 +183,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
-      outputImage(aScreen, agent, 0.0);
+      outputImage(aScreen, agent, 0.0, width, height);
       free(aScreen);
     }
 

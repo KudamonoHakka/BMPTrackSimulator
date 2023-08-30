@@ -17,6 +17,6 @@ double degreeRadConvert(double inp, char isRad);
 void printViewport(AGENT* agent, double* aScreenshot);
 void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height);
 double errorCalculate(double deltaTheta);
-void outputImage(double* aScreen, AGENT* agent, double error);
+void outputImage(double* aScreen, AGENT* agent, double error, int imageWidth, int imageHeight);
 
 #endif

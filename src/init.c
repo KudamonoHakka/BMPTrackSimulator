@@ -5,7 +5,7 @@
 unsigned char* readTrack(char* fileName, int* w, int* h)
 {
   // This whole first bit reads 24-bit BMP file and extracts pixel information
-  FILE *fp = fopen("road.bmp", "rb");
+  FILE *fp = fopen(fileName, "rb");
   if (fp == NULL)
   {
       printf("Error: Could not open file.\n");
