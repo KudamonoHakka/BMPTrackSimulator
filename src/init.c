@@ -85,14 +85,29 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           pl->yPos = y;
 
           // Determine if this is a red or green PIXEL_LINK; add it to unsorted linked list
-          if (red == 255)
+          if (red == 255 || blue == 255)
           {
-            if (redHead != 0)
+
+            if (blue == 255 && redHead == 0x0)
+            {
+              redHead = pl;
+              redCurrent = pl;
+            }
+            else if (blue == 255 && redHead != 0x0)
+            {
+              redCurrent->nextPixel = redHead;
+              pl->nextPixel = redHead->nextPixel;
+              redHead->nextPixel = 0x0;
+              redCurrent = redHead;
+              redHead = pl;
+            }
+            else if (redHead != 0)
               redCurrent->nextPixel = pl;
             else
               redHead = pl;
 
-            redCurrent = pl;
+            if (blue != 255)
+              redCurrent = pl;
 
             // We want the agent to read this as a black pixel
             for (int i = 0; i < 3; i++)
