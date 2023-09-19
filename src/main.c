@@ -29,8 +29,10 @@ int main(int argc, char *argv[]) {
   agent->stepSize = 2.0;
   agent->rotStepSize = 2.0;
   agent->angle = 0;
-  agent->xViewRange = 25;
-  agent->yViewRange = 10;
+  agent->xViewRange = 15;
+  agent->xOffset = 1;
+  agent->yViewRange = 15;
+  agent->yOffset = 1;
 
   // Run the simulation
   simulate(agent, sortedHead, pixelData, width, height);

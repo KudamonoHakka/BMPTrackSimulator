@@ -8,12 +8,12 @@
 double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height)
 {
   // Define the view buffer of our agent
-  double* viewBuffer = malloc(sizeof(double) * (agent->xViewRange*2+1) * (agent->yViewRange*2+1));
+  double* viewBuffer = malloc(sizeof(double) * (agent->xViewRange*2+1 + agent->xOffset) * (agent->yViewRange*2+1 +agent->yOffset));
 
   // Start in the top-left relative to the agent; go through every square
-  for (int y = -agent->yViewRange; y <= agent->yViewRange; y++)
+  for (int y = -agent->yViewRange; y <= agent->yViewRange + agent->xOffset; y++)
   {
-    for (int x = -agent->xViewRange; x <= agent->xViewRange; x++)
+    for (int x = -agent->xViewRange; x <= agent->xViewRange + agent->yOffset; x++)
     {
       // Get relative angle of point; then add agent angle to find new angle
 
@@ -33,8 +33,8 @@ double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height
       int relY = (int)(yChange + 0.5*((yChange >= 0)?1.0:-1.0));
 
       // With calculated index, populate viewBuffer
-      int index = ((agent->yPos + relY) * width + (agent->xPos + relX)) * 3;
-      int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1) + (agent->xViewRange + x);
+      int index = ((agent->yPos + relY) * (width+agent->xOffset) + (agent->xPos + relX)) * 3;
+      int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1 + agent->xOffset) + (agent->xViewRange + x);
 
       viewBuffer[viewBufferIndex] = pixelData[index];
 
@@ -79,16 +79,25 @@ void outputImage(double* aScreen, AGENT* agent, double error, int imageWidth, in
   FILE *f;
 
   // We need to convert our double values of aScreen to unsigned char equals
-  int w = agent->xViewRange*2+1;
-  int h = agent->yViewRange*2+1;
+  int w = agent->xViewRange*2+1 + agent->xOffset;
+  int h = agent->yViewRange*2+1 + agent->yOffset;
   unsigned char* img = (unsigned char *)malloc(3*w*h);
+
+  // Check that we don't have a blank image; discard those
+  int sum = 0x0;
+  for (int y = 0; y < h; y++)
+    for (int x = 0; x < w; x++)
+      sum += abs((char)aScreen[y * w + x]);
+  if (sum < 2 * w * h)
+    return;
+
   memset(img,0,3*w*h);
 
   // Assign values from our view matrix to formated BMP pixels
   for (int y = 0; y < h; y++)
     for (int x = 0; x < w; x++)
       for (int b = 0; b < 3; b++)
-        img[(y * w + x)*3 + b] = 0xFF - (char)aScreen[y * w + x]; // Invert the data so that 1 represents road and 0 represents nothing
+        img[(y * w + x)*3 + b] = (aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x]); // Invert the data so that 1 represents road and 0 represents nothing
 
   int filesize = 54 + 3*w*h;
 
@@ -155,7 +164,8 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, errorCalculate(deltaTheta), width, height);
-
+      //printViewport(agent, aScreen);
+      //printf("\n");
       free(aScreen);
 
       // Calculate delta theta between achieved checkpoint and further checkpoint
@@ -184,6 +194,8 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, 0.0, width, height);
+      //printViewport(agent, aScreen);
+      //printf("\n");
       free(aScreen);
     }
 

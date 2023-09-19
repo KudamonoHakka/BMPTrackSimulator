@@ -7,6 +7,8 @@ typedef struct AGENT{
   double angle;
   int xViewRange;
   int yViewRange;
+  int xOffset;
+  int yOffset;
   double stepSize;
   double rotStepSize;
 } AGENT;
