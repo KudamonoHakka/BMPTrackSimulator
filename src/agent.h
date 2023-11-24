@@ -17,7 +17,7 @@ double twoPointAngle(int xPos1, int yPos1, int xPos2, int yPos2);
 double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height);
 double degreeRadConvert(double inp, char isRad);
 void printViewport(AGENT* agent, double* aScreenshot);
-void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height);
+void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height, int sock);
 double errorCalculate(double deltaTheta);
 void outputImage(double* aScreen, AGENT* agent, double error, int imageWidth, int imageHeight);
 

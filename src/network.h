@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <winsock2.h>
 
+#define BUFFER_SIZE 1024
+
 int connectServer(int port);
+int recieveData(int sock, char* serverReply, int bufferSize);
 
 #endif

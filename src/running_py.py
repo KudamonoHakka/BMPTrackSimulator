@@ -190,28 +190,24 @@ def predict_hybrid(x):
     return y
 
 # Measuring Performance
-x_train, x_test, y_train, y_test = binary_data()
-
-hybrid_aes = []
-classical_aes = []
-for i in range(30):
-    random_number = random.randint(0, n_test-1)
-
-    x = x_test[random_number]
-    y = y_test[random_number]
-    plt.imshow(tf.cast(x_test[random_number], tf.float32))
-    hybrid_y = predict_hybrid(x)
-    classical_y = predict_classical(x)
-
-    hybrid_aes.append(abs(hybrid_y - y))
-    classical_aes.append(abs(classical_y - y))
-
-print('Hybrid MAE: ', np.mean(hybrid_aes))
-print('Classical MAE: ', np.mean(classical_aes))
-
-"""
-# Code to host local socket
-
+# x_train, x_test, y_train, y_test = binary_data()
+#
+# hybrid_aes = []
+# classical_aes = []
+# for i in range(30):
+#     random_number = random.randint(0, n_test-1)
+#
+#     x = x_test[random_number]
+#     y = y_test[random_number]
+#     plt.imshow(tf.cast(x_test[random_number], tf.float32))
+#     hybrid_y = predict_hybrid(x)
+#     classical_y = predict_classical(x)
+#
+#     hybrid_aes.append(abs(hybrid_y - y))
+#     classical_aes.append(abs(classical_y - y))
+#
+# print('Hybrid MAE: ', np.mean(hybrid_aes))
+# print('Classical MAE: ', np.mean(classical_aes))
 import socket
 
 def start_server(host, port):
@@ -233,6 +229,4 @@ def start_server(host, port):
     conn.close()
 
 if __name__ == "__main__":
-    start_server('127.0.0.1', 65432)
-
-"""
+    start_server('127.0.0.1', 31337)

@@ -6,39 +6,53 @@ int connectServer(int port)
 {
   // This function simply connects to a local socket given a port and returns that socket
 
-  int sock = 0;
-  struct sockaddr_in serv_addr;
-  char buffer[1024] = {0};
-  char *message = "Hello from C client";
+  WSADATA wsaData;
+  SOCKET sock = INVALID_SOCKET;
+  struct sockaddr_in server;
+  char *message = "Hello World";
+  int result;
 
-  // Creating socket
-  if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-      printf("\n Socket creation error \n");
+  // Initialize Winsock
+  result = WSAStartup(MAKEWORD(2,2), &wsaData);
+  if (result != 0)
+  {
+      printf("WSAStartup failed: %d\n", result);
       return -1;
   }
 
-  serv_addr.sin_family = AF_INET;
-  serv_addr.sin_port = htons(port);
-
-
-  // Convert IPv4 and IPv6 addresses from text to binary form
-  serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-  if (serv_addr.sin_addr.s_addr == INADDR_NONE) {
-    printf("\nInvalid address/ Address not supported \n");
-    return -1;
-  }
-
-  if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-      printf("\nConnection Failed \n");
+  // Create socket
+  if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+  {
+      printf("Could not create socket : %d\n", WSAGetLastError());
+      WSACleanup();
       return -1;
   }
 
-  send(sock, message, strlen(message), 0);
-  printf("Message sent\n");
-  read(sock, buffer, 1024);
-  printf("Message from server: %s\n", buffer);
+  // Setup the server address
+  server.sin_addr.s_addr = inet_addr("127.0.0.1"); // server IP
+  server.sin_family = AF_INET;
+  server.sin_port = htons(port); // server port
 
-  close(sock);
+  // Connect to server
+  if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0)
+  {
+      printf("connect failed. Error: %d\n", WSAGetLastError());
+      closesocket(sock);
+      WSACleanup();
+      return -1;
+  }
 
+  return sock;
+}
+
+int recieveData(int sock, char* serverReply, int bufferSize)
+{
+  // Receive a reply from the server
+  int recv_size;
+  if ((recv_size = recv(sock, serverReply, bufferSize, 0)) == SOCKET_ERROR)
+  {
+    return WSAGetLastError();
+  }
+  serverReply[recv_size] = '\0'; // null-terminate the string
   return 0;
 }

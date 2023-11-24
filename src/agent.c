@@ -150,7 +150,7 @@ double errorCalculate(double deltaTheta)
   return (abs(deltaTheta) < 90)? -sin(degreeRadConvert(deltaTheta, 0)): -abs(deltaTheta) / deltaTheta;;
 }
 
-void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height)
+void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height, int sock)
 {
   // This function will run the simulation and take snapshots of the agent's view matrix
   double* aScreen;
