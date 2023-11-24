@@ -190,7 +190,7 @@ def predict_hybrid(x):
     return y
 
 # Measuring Performance
-# x_train, x_test, y_train, y_test = binary_data()
+#x_train, x_test, y_train, y_test = binary_data()
 #
 # hybrid_aes = []
 # classical_aes = []
@@ -208,6 +208,12 @@ def predict_hybrid(x):
 #
 # print('Hybrid MAE: ', np.mean(hybrid_aes))
 # print('Classical MAE: ', np.mean(classical_aes))
+
+#print(type(x_test[0]))
+#for i in range(len(x_test)):
+#    print(x_test[i])
+
+
 import socket
 
 def start_server(host, port):
@@ -220,11 +226,29 @@ def start_server(host, port):
     print(f"Connected by {addr}")
 
     while True:
-        data = conn.recv(1024)
+        data = conn.recv(16384)
         if not data:
             break
-        print(f"Received from C client: {data.decode()}")
-        conn.sendall(b"Hello from Python server!")
+
+        # Split up data
+        split_data = data.decode().split("BREAK")
+        for i in range(len(split_data)):
+            split_data[i] = split_data[i].split(" ")
+            while("" in split_data[i]):
+                split_data[i].remove("")
+
+        #Remove last empty array
+        split_data.pop()
+        for i in range(len(split_data)):
+            for b in range(len(split_data)):
+                split_data[i][b] = [float(split_data[i][b])]
+
+        split_data = np.array(split_data)
+        # for i in range(len(split_data)):
+        #     print("Length: "+str(len(split_data[i])))
+        print("Prediction: "+str(predict_hybrid(split_data)[0]))
+
+        conn.sendall(str(predict_hybrid(split_data)[0]).encode())
 
     conn.close()
 

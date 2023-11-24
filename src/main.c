@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
   agent->yPos = sortedHead->yPos;
   agent->stepSize = 2.0;
   agent->rotStepSize = 2.0;
-  agent->angle = 0;
+  agent->angle = 315;
   agent->xViewRange = 15;
   agent->xOffset = 1;
   agent->yViewRange = 15;
@@ -42,13 +42,12 @@ int main(int argc, char *argv[]) {
 
   // Connect to server
 
-  /*printf("Connecting to server...\n");
+  printf("Connecting to server...\n");
   int sock = connectServer(PORT);
   if (sock == -1)
     return sock;
-  printf("Connection complete!\n");*/
+  printf("Connection complete!\n");
 
-  int sock = 0;
 
   simulate(agent, sortedHead, pixelData, width, height, sock);
 

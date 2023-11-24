@@ -72,7 +72,7 @@ void printViewport(AGENT* agent, double* aScreen)
   {
     for (int x = 0; x < w; x++)
     {
-      printf("%d ", ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0);
+      printf("%d%d", ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0, ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0);
     }
     printf("\n");
   }
@@ -151,7 +151,69 @@ double errorCalculate(double deltaTheta)
   deltaTheta -= (deltaTheta > 180.0)? 360 : 0;
 
   // Map our deltaTheta (0, 90) to a sinusoidal function; if we exceed an absolute deltaTheta greater than 90, assume the value to be max turning
-  return (abs(deltaTheta) < 90)? -sin(degreeRadConvert(deltaTheta, 0)): -abs(deltaTheta) / deltaTheta;;
+  return (abs(deltaTheta) < 90)? -sin(degreeRadConvert(deltaTheta, 0)): -abs(deltaTheta) / deltaTheta;
+}
+
+double errorCalculateInverse(double prediction)
+{
+  // This function takes a prediction and reverses it to its original deltaTheta
+  double deltaTheta = asin(prediction);
+  return degreeRadConvert(deltaTheta, 1);
+}
+
+double predict(AGENT* agent, double* aScreen, int sock)
+{
+  // This function will connect to our python socket and grab a model prediction after converting aScreen to usable format
+
+
+  // Convert aScreen to string representation
+  int w = agent->xViewRange*2+1 + agent->xOffset;
+  int h = agent->yViewRange*2+1 + agent->yOffset;
+  int SEND_BUFFER_SIZE = h * w * 13;
+
+
+  char* message = malloc(SEND_BUFFER_SIZE);
+  memset(message, 0x0, SEND_BUFFER_SIZE);
+  int msgIndex = 0;
+
+  for (int y = 0; y < h; y++)
+  {
+    for (int x = 0; x < w; x++)
+    {
+      // Format string for each row in view matrix
+      char* formatString = malloc(100);
+      sprintf(formatString, "%0.2f ", 255.0 - (double)aScreen[y * w + x]);
+      strncat(message, formatString, 8);
+      free(formatString);
+
+    }
+    strncat(message, "BREAK", 8);
+  }
+
+  // Recieve information from server
+
+  // printf("Output: %s\n", message);
+
+  char* recvData = malloc(BUFFER_SIZE);
+  //char* message = "Hello World";
+
+  int err = sendReceive(sock, message, recvData, BUFFER_SIZE);
+  if (err != 0)
+  {
+    printf("Error!!!\n");
+    closesocket(sock);
+    WSACleanup();
+    return err;
+  }
+
+  // Dummy char pointer to hold empty strod output
+  char* dPtr;
+
+  // Convert string to double
+  double ret = strtod(recvData, &dPtr);
+  free(recvData);
+  free(message);
+  return ret;
 }
 
 void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height, int sock)
@@ -160,14 +222,33 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
   // Agent view matrix
   double* aScreen;
-  for (int i = 0; i < 360; i++)
+
+  for (int i = 0; i < 1000; i++)
   {
     aScreen = screenshot(agent, pixelData, width, height);
-    printViewport(agent, aScreen);
-    printf("\n\n");
-    agent->angle += 1;
+
+
+    // Get model prediction
+    double prediction = predict(agent, aScreen, sock);
+    double deltaTheta = errorCalculateInverse(prediction);
+
+    printf("Prediciton: %0.5f\n", prediction);
+    printf("deltaTheta: %0.5f\n", deltaTheta);
+
+    // Print what model sees
+    //if (abs(deltaTheta) > 3.0)
+      printViewport(agent, aScreen);
+
+    agent->angle += deltaTheta;
+    if (abs(deltaTheta) < 3.0)
+    {
+      agent->xPos += (int)((cos(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));
+      agent->yPos -= (int)((sin(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));
+    }
+
     free(aScreen);
   }
+
 
 
   /*
