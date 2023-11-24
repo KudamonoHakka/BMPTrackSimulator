@@ -56,3 +56,19 @@ int recieveData(int sock, char* serverReply, int bufferSize)
   serverReply[recv_size] = '\0'; // null-terminate the string
   return 0;
 }
+
+int sendReceive(int sock, char* sendBuffer, char* serverReply, int bufferSize)
+{
+  if (send(sock, sendBuffer, strlen(sendBuffer), 0) < 0)
+  {
+      int err = WSAGetLastError();
+      return err;
+  }
+
+  int err = recieveData(sock, serverReply, BUFFER_SIZE);
+
+  if (err != 0)
+    return err;
+
+  return 0;
+}

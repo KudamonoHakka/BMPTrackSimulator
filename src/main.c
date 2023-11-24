@@ -49,34 +49,33 @@ int main(int argc, char *argv[]) {
 
 
   // Send test message
-  char *message = "Hello World";
-  if (send(sock, message, strlen(message), 0) < 0) {
-      printf("Send failed : %d\n", WSAGetLastError());
-      closesocket(sock);
-      WSACleanup();
-      return 1;
-  }
-  printf("Data Sent\n");
 
   // Recieve information from server
   char* recvData = malloc(BUFFER_SIZE);
-  int err = recieveData(sock, recvData, BUFFER_SIZE);
+  char *message = "Hello World";
 
-  if (err != 0)
-    return err;
+  for (int i = 0; i < 5; i++)
+  {
+    int err = sendReceive(sock, message, recvData, BUFFER_SIZE);
+    if (err != 0)
+    {
+      printf("Error!!!\n");
+      closesocket(sock);
+      WSACleanup();
+      return err;
+    }
 
-  printf("Recieved data: %s\n", recvData);
-
-  // Cleanup
-  closesocket(sock);
-  WSACleanup();
-
+    printf("Data: %s\n", recvData);
+    memset(recvData, 0x0, BUFFER_SIZE);
+  }
 
 
   // Do a final cleanup
   cleanup(sortedHead);
   free(recvData);
   free(agent);
+  closesocket(sock);
+  WSACleanup();
 
   printf("Simulation successful\n");
 

@@ -11,5 +11,5 @@
 
 int connectServer(int port);
 int recieveData(int sock, char* serverReply, int bufferSize);
-
+int sendReceive(int sock, char* sendBuffer, char* serverReply, int bufferSize);
 #endif
