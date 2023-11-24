@@ -14,7 +14,7 @@ typedef struct {
     unsigned short bfReserved1;
     unsigned short bfReserved2;
     unsigned int bfOffBits;
-} BITMAPFILEHEADER;
+} BITMAPFILEHEADER_T;
 
 typedef struct {
     unsigned int biSize;
@@ -28,7 +28,7 @@ typedef struct {
     int biYPelsPerMeter;
     unsigned int biClrUsed;
     unsigned int biClrImportant;
-} BITMAPINFOHEADER;
+} BITMAPINFOHEADER_T;
 
 
 

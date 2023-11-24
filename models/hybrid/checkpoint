@@ -1,0 +1,2 @@
+model_checkpoint_path: "hybrid3232_weights"
+all_model_checkpoint_paths: "hybrid3232_weights"

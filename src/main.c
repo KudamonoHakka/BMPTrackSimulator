@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   agent->yOffset = 1;
 
   // Run the simulation
-  simulate(agent, sortedHead, pixelData, width, height);
+  //simulate(agent, sortedHead, pixelData, width, height);
 
   // Do a final cleanup
   cleanup(sortedHead);

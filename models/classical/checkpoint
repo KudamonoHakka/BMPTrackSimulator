@@ -1,0 +1,2 @@
+model_checkpoint_path: "classical3232_weights"
+all_model_checkpoint_paths: "classical3232_weights"

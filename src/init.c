@@ -12,11 +12,11 @@ unsigned char* readTrack(char* fileName, int* w, int* h)
       exit(-1);
   }
 
-  BITMAPFILEHEADER fileHeader;
-  BITMAPINFOHEADER infoHeader;
+  BITMAPFILEHEADER_T fileHeader;
+  BITMAPINFOHEADER_T infoHeader;
 
-  fread(&fileHeader, sizeof(BITMAPFILEHEADER), 1, fp);
-  fread(&infoHeader, sizeof(BITMAPINFOHEADER), 1, fp);
+  fread(&fileHeader, sizeof(BITMAPFILEHEADER_T), 1, fp);
+  fread(&infoHeader, sizeof(BITMAPINFOHEADER_T), 1, fp);
 
   if (fileHeader.bfType != 0x4D42)
   {
