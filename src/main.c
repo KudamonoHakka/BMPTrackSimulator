@@ -41,12 +41,14 @@ int main(int argc, char *argv[]) {
   //simulate(agent, sortedHead, pixelData, width, height);
 
   // Connect to server
-  printf("Connecting to server...\n");
+
+  /*printf("Connecting to server...\n");
   int sock = connectServer(PORT);
   if (sock == -1)
     return sock;
-  printf("Connection complete!\n");
+  printf("Connection complete!\n");*/
 
+  int sock = 0;
 
   simulate(agent, sortedHead, pixelData, width, height, sock);
 

@@ -61,15 +61,18 @@ double twoPointAngle(int xPos1, int yPos1, int xPos2, int yPos2)
   return (theta >= 0)? theta : theta + 360;
 }
 
-void printViewport(AGENT* agent, double* aScreenshot)
+void printViewport(AGENT* agent, double* aScreen)
 {
   // Debugging function; prints out the contents of agent's view matrix
-  for (int y = -agent->yViewRange; y <= agent->yViewRange; y++)
+
+  int w = agent->xViewRange*2+1 + agent->xOffset;
+  int h = agent->yViewRange*2+1 + agent->yOffset;
+
+  for (int y = 0; y < h; y++)
   {
-    for (int x = -agent->xViewRange; x <= agent->xViewRange; x++)
+    for (int x = 0; x < w; x++)
     {
-      int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1) + (agent->xViewRange + x);
-      printf("%d", !(aScreenshot[viewBufferIndex] > 0.0));
+      printf("%d ", ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0);
     }
     printf("\n");
   }
@@ -157,8 +160,14 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
   // Agent view matrix
   double* aScreen;
-  aScreen = screenshot(agent, pixelData, width, height);
-  printViewport(agent, aScreen);
+  for (int i = 0; i < 360; i++)
+  {
+    aScreen = screenshot(agent, pixelData, width, height);
+    printViewport(agent, aScreen);
+    printf("\n\n");
+    agent->angle += 1;
+    free(aScreen);
+  }
 
 
   /*
@@ -212,7 +221,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     // At this point we're close enough to the checkpoint to lock onto it
     agent->xPos = pl->nextPixel->xPos;
     agent->yPos = pl->nextPixel->yPos;
-    
+
   }*/
   free(aScreen);
 }
