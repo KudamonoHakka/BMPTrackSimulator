@@ -81,6 +81,7 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           PIXEL_LINK* pl = malloc(sizeof(PIXEL_LINK));
           pl->xPos = x;
           pl->yPos = y;
+          pl->nextPixel = 0x0;
 
           // Determine if this is a red or green PIXEL_LINK; add it to unsorted linked list
           if (red == 255 || blue == 255)
