@@ -4,6 +4,7 @@
 #include "main.h"
 #include "init.h"
 #include "agent.h"
+#include "network.h"
 
 double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height)
 {
@@ -152,6 +153,14 @@ double errorCalculate(double deltaTheta)
 
 void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, int width, int height, int sock)
 {
+  // This will start our simulation and take model prediction information and apply to our agent
+
+  // Agent view matrix
+  double* aScreen;
+  aScreen = screenshot(agent, pixelData, width, height);
+
+
+  /*
   // This function will run the simulation and take snapshots of the agent's view matrix
   double* aScreen;
   for (PIXEL_LINK* pl = sortedHead; pl->nextPixel != 0x0; pl = pl->nextPixel)
@@ -202,6 +211,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     // At this point we're close enough to the checkpoint to lock onto it
     agent->xPos = pl->nextPixel->xPos;
     agent->yPos = pl->nextPixel->yPos;
+    */
   }
   free(aScreen);
 }

@@ -48,11 +48,15 @@ int main(int argc, char *argv[]) {
   printf("Connection complete!\n");
 
 
-  // Send test message
+  simulate(agent, sortedHead, pixelData, width, height, sock);
 
+
+  // Example networking code
+
+  /*
   // Recieve information from server
   char* recvData = malloc(BUFFER_SIZE);
-  char *message = "Hello World";
+  char* message = "Hello World";
 
   for (int i = 0; i < 5; i++)
   {
@@ -68,7 +72,7 @@ int main(int argc, char *argv[]) {
     printf("Data: %s\n", recvData);
     memset(recvData, 0x0, BUFFER_SIZE);
   }
-
+  */
 
   // Do a final cleanup
   cleanup(sortedHead);
