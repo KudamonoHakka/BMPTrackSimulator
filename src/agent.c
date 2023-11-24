@@ -158,6 +158,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
   // Agent view matrix
   double* aScreen;
   aScreen = screenshot(agent, pixelData, width, height);
+  printViewport(agent, aScreen);
 
 
   /*
@@ -211,7 +212,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     // At this point we're close enough to the checkpoint to lock onto it
     agent->xPos = pl->nextPixel->xPos;
     agent->yPos = pl->nextPixel->yPos;
-    */
-  }
+    
+  }*/
   free(aScreen);
 }

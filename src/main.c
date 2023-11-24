@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 
   // Do a final cleanup
   cleanup(sortedHead);
-  free(recvData);
+  //free(recvData);
   free(agent);
   closesocket(sock);
   WSACleanup();

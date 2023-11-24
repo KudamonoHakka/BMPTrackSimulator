@@ -81,6 +81,7 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           PIXEL_LINK* pl = malloc(sizeof(PIXEL_LINK));
           pl->xPos = x;
           pl->yPos = y;
+          pl->nextPixel = 0x0;
 
           // Determine if this is a red or green PIXEL_LINK; add it to unsorted linked list
           if (red == 255 || blue == 255)
@@ -123,7 +124,6 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
             for (int i = 0; i < 3; i++)
               pixelData[index + i] = 0x0;
           }
-
 
         }
         else
@@ -171,8 +171,11 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
       // Double assign just for clarity
       iterNextPixel = pl;
 
+      //printf("pl->nextPixel: %x\n", pl->nextPixel);
+      //printf("pl->nextPixel->xpos: %x\n", pl->nextPixel->xPos);
       // Check if our currently iterated pixel is closer to the current pixel than current next pixel
       int iterDistance = sqrt(pow(iterNextPixel->xPos - currentPixel->xPos, 2) + pow(iterNextPixel->yPos - currentPixel->yPos, 2));
+
 
       // If closer, then swap the next pixel for the iterated pixel
       if (iterDistance < nextDistance && iterNextPixel != currentPixel)
@@ -181,7 +184,6 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
         previousPixel = iterPreviousPixel;
         nextDistance = iterDistance;
       }
-
       // Update the previous pixel to be current one
       iterPreviousPixel = pl;
     }
