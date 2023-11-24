@@ -7,6 +7,6 @@
 #include <unistd.h>
 #include <winsock2.h>
 
-struct sockaddr_in* connectServer(int port);
+int connectServer(int port);
 
 #endif

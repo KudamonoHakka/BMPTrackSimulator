@@ -208,3 +208,31 @@ for i in range(30):
 
 print('Hybrid MAE: ', np.mean(hybrid_aes))
 print('Classical MAE: ', np.mean(classical_aes))
+
+"""
+# Code to host local socket
+
+import socket
+
+def start_server(host, port):
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host, port))
+    server.listen(1)
+    print(f"Server listening on {host}:{port}")
+
+    conn, addr = server.accept()
+    print(f"Connected by {addr}")
+
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        print(f"Received from C client: {data.decode()}")
+        conn.sendall(b"Hello from Python server!")
+
+    conn.close()
+
+if __name__ == "__main__":
+    start_server('127.0.0.1', 65432)
+
+"""
