@@ -5,9 +5,10 @@
 int main(int argc, char *argv[]) {
 
   // Check if we have proper command line arguments
-  if (argc != 2)
+
+  if (argc != 2 && argc != 3)
   {
-    printf("Usage: %s [track.bmp]\n", argv[0]);
+    printf("Usage: %s [track.bmp] [angle=0 degrees]\n", argv[0]);
     exit(-1);
   }
 
@@ -33,6 +34,10 @@ int main(int argc, char *argv[]) {
   agent->xOffset = 1;
   agent->yViewRange = 15;
   agent->yOffset = 1;
+
+  char* dummyString;
+  if (argc == 3)
+    agent->angle = strtod(argv[2], &dummyString);
 
   // Run the simulation
   simulate(agent, sortedHead, pixelData, width, height);
