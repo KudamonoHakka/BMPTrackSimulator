@@ -215,6 +215,10 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 {
   // This will start our simulation and take model prediction information and apply to our agent
 
+
+  printf("START AGENT XPOS: %d\n", agent->xPos);
+  printf("START AGENT YPOS: %d\n", agent->yPos);
+
   // Agent view matrix
   double* aScreen;
 
@@ -229,12 +233,16 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
     printf("Prediciton: %0.5f\n", prediction);
     printf("deltaTheta: %0.5f\n", deltaTheta);
+    printf("Xpos: %d\n", agent->xPos);
+    printf("Ypos: %d\n", agent->yPos);
 
     // Print what model sees
     //if (abs(deltaTheta) > 3.0)
     printViewport(agent, aScreen);
 
     agent->angle += deltaTheta;
+
+    // If our change in angle is so low, just keep moving forward; else stop and let the model turn
     if (abs(deltaTheta) < 3.0)
     {
       agent->xPos += (int)((cos(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));

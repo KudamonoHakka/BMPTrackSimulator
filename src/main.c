@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
 
   // Connect to server
 
+
   printf("Connecting to server...\n");
   int sock = connectServer(PORT);
   if (sock == -1)

@@ -35,17 +35,28 @@ unsigned char* readTrack(char* fileName, int* w, int* h)
   *h = height;
 
   unsigned char *pixelData = malloc(3 * width * height);
-  if (pixelData == NULL)
-  {
-      printf("Error: Could not allocate memory.\n");
-      fclose(fp);
-      exit(-1);
-  }
 
   // Create a buffer with all of the pixel information
   fread(pixelData, 3 * width, height, fp);
   fclose(fp);
-  return pixelData;
+
+  // Need to flip the buffer upside down
+  unsigned char *flippedData = malloc(3 * width * height);
+
+  // Flip the image vertically
+  for (int y = 0; y < height; y++)
+  {
+      // Calculate the start of the current row in the original and new buffer
+      unsigned char *originalRow = pixelData + (3 * width * y);
+      unsigned char *flippedRow = flippedData + (3 * width * (height - 1 - y));
+
+      // Copy the entire row
+      memcpy(flippedRow, originalRow, 3 * width);
+  }
+
+  free(pixelData);
+
+  return flippedData;
 }
 
 PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
@@ -82,6 +93,8 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           pl->xPos = x;
           pl->yPos = y;
           pl->nextPixel = 0x0;
+
+          printf("Pixel (%d, %d) RGB (%d, %d, %d)\n", pl->xPos, pl->yPos, red, green, blue);
 
           // Determine if this is a red or green PIXEL_LINK; add it to unsorted linked list
           if (red == 255 || blue == 255)
@@ -171,8 +184,6 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
       // Double assign just for clarity
       iterNextPixel = pl;
 
-      //printf("pl->nextPixel: %x\n", pl->nextPixel);
-      //printf("pl->nextPixel->xpos: %x\n", pl->nextPixel->xPos);
       // Check if our currently iterated pixel is closer to the current pixel than current next pixel
       int iterDistance = sqrt(pow(iterNextPixel->xPos - currentPixel->xPos, 2) + pow(iterNextPixel->yPos - currentPixel->yPos, 2));
 
