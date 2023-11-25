@@ -185,17 +185,12 @@ double predict(AGENT* agent, double* aScreen, int sock)
       sprintf(formatString, "%0.2f ", 255.0 - (double)aScreen[y * w + x]);
       strncat(message, formatString, 8);
       free(formatString);
-
     }
     strncat(message, "BREAK", 8);
   }
 
   // Recieve information from server
-
-  // printf("Output: %s\n", message);
-
   char* recvData = malloc(BUFFER_SIZE);
-  //char* message = "Hello World";
 
   int err = sendReceive(sock, message, recvData, BUFFER_SIZE);
   if (err != 0)
@@ -237,7 +232,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
     // Print what model sees
     //if (abs(deltaTheta) > 3.0)
-      printViewport(agent, aScreen);
+    printViewport(agent, aScreen);
 
     agent->angle += deltaTheta;
     if (abs(deltaTheta) < 3.0)
