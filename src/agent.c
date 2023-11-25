@@ -167,7 +167,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, errorCalculate(deltaTheta), width, height);
-      //printViewport(agent, aScreen);
+      printViewport(agent, aScreen);
       //printf("\n");
       free(aScreen);
 
@@ -197,7 +197,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, 0.0, width, height);
-      //printViewport(agent, aScreen);
+      printViewport(agent, aScreen);
       //printf("\n");
       free(aScreen);
     }
