@@ -35,17 +35,28 @@ unsigned char* readTrack(char* fileName, int* w, int* h)
   *h = height;
 
   unsigned char *pixelData = malloc(3 * width * height);
-  if (pixelData == NULL)
-  {
-      printf("Error: Could not allocate memory.\n");
-      fclose(fp);
-      exit(-1);
-  }
 
   // Create a buffer with all of the pixel information
   fread(pixelData, 3 * width, height, fp);
   fclose(fp);
-  return pixelData;
+
+  // Need to flip the buffer upside down
+  unsigned char *flippedData = malloc(3 * width * height);
+
+  // Flip the image vertically
+  for (int y = 0; y < height; y++)
+  {
+      // Calculate the start of the current row in the original and new buffer
+      unsigned char *originalRow = pixelData + (3 * width * y);
+      unsigned char *flippedRow = flippedData + (3 * width * (height - 1 - y));
+
+      // Copy the entire row
+      memcpy(flippedRow, originalRow, 3 * width);
+  }
+
+  free(pixelData);
+
+  return flippedData;
 }
 
 PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
