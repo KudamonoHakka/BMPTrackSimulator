@@ -37,7 +37,9 @@ int main(int argc, char *argv[]) {
   agent->yViewRange = 15;
   agent->yOffset = 1;
 
-  // Run the simulation
+  char* dummyString;
+  if (argc == 3)
+    agent->angle = strtod(argv[2], &dummyString);
 
   // Connect to server
   printf("Connecting to server...\n");

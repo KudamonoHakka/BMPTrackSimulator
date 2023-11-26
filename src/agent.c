@@ -229,7 +229,8 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 
     // Print what model sees
     //if (abs(deltaTheta) > 3.0)
-    //printViewport(agent, aScreen);
+    printViewport(agent, aScreen);
+    printf("\n");
 
     agent->angle += deltaTheta;
 

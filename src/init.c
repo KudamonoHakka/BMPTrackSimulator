@@ -94,8 +94,6 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
           pl->yPos = y;
           pl->nextPixel = 0x0;
 
-          printf("Pixel (%d, %d) RGB (%d, %d, %d)\n", pl->xPos, pl->yPos, red, green, blue);
-
           // Determine if this is a red or green PIXEL_LINK; add it to unsorted linked list
           if (red == 255 || blue == 255)
           {
