@@ -38,11 +38,8 @@ int main(int argc, char *argv[]) {
   agent->yOffset = 1;
 
   // Run the simulation
-  //simulate(agent, sortedHead, pixelData, width, height);
 
   // Connect to server
-
-
   printf("Connecting to server...\n");
   int sock = connectServer(PORT);
   if (sock == -1)
@@ -51,30 +48,6 @@ int main(int argc, char *argv[]) {
 
 
   simulate(agent, sortedHead, pixelData, width, height, sock);
-
-
-  // Example networking code
-
-  /*
-  // Recieve information from server
-  char* recvData = malloc(BUFFER_SIZE);
-  char* message = "Hello World";
-
-  for (int i = 0; i < 5; i++)
-  {
-    int err = sendReceive(sock, message, recvData, BUFFER_SIZE);
-    if (err != 0)
-    {
-      printf("Error!!!\n");
-      closesocket(sock);
-      WSACleanup();
-      return err;
-    }
-
-    printf("Data: %s\n", recvData);
-    memset(recvData, 0x0, BUFFER_SIZE);
-  }
-  */
 
   // Do a final cleanup
   cleanup(sortedHead);

@@ -34,7 +34,7 @@ double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height
       int relY = (int)(yChange + 0.5*((yChange >= 0)?1.0:-1.0));
 
       // With calculated index, populate viewBuffer
-      int index = ((agent->yPos + relY) * (width+agent->xOffset) + (agent->xPos + relX)) * 3;
+      int index = ((agent->yPos + relY) * (width) + (agent->xPos + relX)) * 3;
       int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1 + agent->xOffset) + (agent->xViewRange + x);
 
       viewBuffer[viewBufferIndex] = pixelData[index];
@@ -215,10 +215,6 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
 {
   // This will start our simulation and take model prediction information and apply to our agent
 
-
-  printf("START AGENT XPOS: %d\n", agent->xPos);
-  printf("START AGENT YPOS: %d\n", agent->yPos);
-
   // Agent view matrix
   double* aScreen;
 
@@ -231,14 +227,9 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     double prediction = predict(agent, aScreen, sock);
     double deltaTheta = errorCalculateInverse(prediction);
 
-    printf("Prediciton: %0.5f\n", prediction);
-    printf("deltaTheta: %0.5f\n", deltaTheta);
-    printf("Xpos: %d\n", agent->xPos);
-    printf("Ypos: %d\n", agent->yPos);
-
     // Print what model sees
     //if (abs(deltaTheta) > 3.0)
-    printViewport(agent, aScreen);
+    //printViewport(agent, aScreen);
 
     agent->angle += deltaTheta;
 
@@ -252,60 +243,5 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     free(aScreen);
   }
 
-
-
-  /*
-  // This function will run the simulation and take snapshots of the agent's view matrix
-  double* aScreen;
-  for (PIXEL_LINK* pl = sortedHead; pl->nextPixel != 0x0; pl = pl->nextPixel)
-  {
-    // Rotate the agent until we face point slowly; collect rotational training data
-    double deltaTheta = agent->angle - twoPointAngle(pl->xPos, pl->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos);
-    deltaTheta += (deltaTheta < 0)? 360 : 0;
-    while (abs(deltaTheta) > 4.0)
-    {
-      // Take snapshot of agent view matrix and save image
-      aScreen = screenshot(agent, pixelData, width, height);
-      outputImage(aScreen, agent, errorCalculate(deltaTheta), width, height);
-      //printViewport(agent, aScreen);
-      //printf("\n");
-      free(aScreen);
-
-      // Calculate delta theta between achieved checkpoint and further checkpoint
-      deltaTheta = agent->angle - twoPointAngle(pl->xPos, pl->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos);
-
-      while (deltaTheta < 0)
-        deltaTheta += 360;
-      while(deltaTheta > 360)
-        deltaTheta -= 360;
-
-      // Calculate turn angle and apply that to our agent
-      double turnDirection = (deltaTheta > 180)? 1.0 : -1.0;
-      agent->angle += agent->rotStepSize * turnDirection;
-    }
-
-    //agent->angle = 360 - twoPointAngle(pl->xPos, pl->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos) + 90;
-    agent->angle = twoPointAngle(pl->xPos, pl->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos);
-
-    // Continuously approach the next checkpoint
-    while (sqrt(pow(agent->xPos - pl->nextPixel->xPos, 2) + pow(agent->yPos - pl->nextPixel->yPos, 2)) > 10.0)
-    {
-      agent->angle = twoPointAngle(agent->xPos, agent->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos);
-      agent->xPos += (int)((cos(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));
-      agent->yPos -= (int)((sin(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));
-
-      // Take snapshot of agent view matrix and save image
-      aScreen = screenshot(agent, pixelData, width, height);
-      outputImage(aScreen, agent, 0.0, width, height);
-      //printViewport(agent, aScreen);
-      //printf("\n");
-      free(aScreen);
-    }
-
-    // At this point we're close enough to the checkpoint to lock onto it
-    agent->xPos = pl->nextPixel->xPos;
-    agent->yPos = pl->nextPixel->yPos;
-
-  }*/
   free(aScreen);
 }
