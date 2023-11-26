@@ -67,7 +67,7 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
 
   PIXEL_LINK* redHead = 0;
   PIXEL_LINK* redCurrent = 0;
-
+  
   // Filter the image to be an average grey scale; spare the map points and add them to unsorted list
   for (int y = 0; y < height; y++)
   {
@@ -147,6 +147,7 @@ PIXEL_LINK** initTrack(unsigned char* pixelData, int width, int height)
   PIXEL_LINK** return_array = malloc(sizeof(PIXEL_LINK*)*2);
   return_array[0] = redHead;
   return_array[1] = greenHead;
+
   return return_array;
 }
 
@@ -158,6 +159,7 @@ PIXEL_LINK* sortLinkedLists(PIXEL_LINK** linkHeads)
   char listIndex = 0;
   PIXEL_LINK* headPixel = linkHeads[listIndex];
   PIXEL_LINK* currentPixel = headPixel;
+
 
   // Make sure to remove from old linked list
   linkHeads[listIndex] = headPixel->nextPixel;

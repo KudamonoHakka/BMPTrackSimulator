@@ -27,9 +27,6 @@ int main(int argc, char *argv[]) {
   AGENT* agent = malloc(sizeof(AGENT));
   agent->xPos = sortedHead->xPos;
   agent->yPos = sortedHead->yPos;
-
-  printf("%d, %d\n", agent->xPos, agent->yPos);
-
   agent->stepSize = 2.0;
   agent->rotStepSize = 2.0;
   agent->angle = 0;

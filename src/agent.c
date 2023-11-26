@@ -33,13 +33,15 @@ double* screenshot(AGENT* agent, unsigned char* pixelData, int width, int height
       int relY = (int)(yChange + 0.5*((yChange >= 0)?1.0:-1.0));
 
       // With calculated index, populate viewBuffer
-      int index = ((agent->yPos + relY) * (width+agent->xOffset) + (agent->xPos + relX)) * 3;
+      int index = ((agent->yPos + relY) * (width) + (agent->xPos + relX)) * 3;
+
       int viewBufferIndex = (agent->yViewRange + y) * (agent->xViewRange*2+1 + agent->xOffset) + (agent->xViewRange + x);
 
       viewBuffer[viewBufferIndex] = pixelData[index];
 
     }
   }
+
   return viewBuffer;
 }
 
@@ -71,7 +73,7 @@ void printViewport(AGENT* agent, double* aScreen)
   {
     for (int x = 0; x < w; x++)
     {
-      printf("%d ", ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0);
+      printf("%d%d", ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0, ((aScreen[y * w + x] == 255.0)? 0x0 : 0xFF - abs((char)aScreen[y * w + x])) > 0);
     }
     printf("\n");
   }
@@ -167,13 +169,13 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, errorCalculate(deltaTheta), width, height);
-      printViewport(agent, aScreen);
-      //printf("\n");
+      //printViewport(agent, aScreen);
       free(aScreen);
 
       // Calculate delta theta between achieved checkpoint and further checkpoint
       deltaTheta = agent->angle - twoPointAngle(pl->xPos, pl->yPos, pl->nextPixel->xPos, pl->nextPixel->yPos);
 
+      //printf("Delta Theta: %0.2f\nPos: (%d, %d)\n\n", deltaTheta, agent->xPos, agent->yPos);
       while (deltaTheta < 0)
         deltaTheta += 360;
       while(deltaTheta > 360)
@@ -197,8 +199,8 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
       // Take snapshot of agent view matrix and save image
       aScreen = screenshot(agent, pixelData, width, height);
       outputImage(aScreen, agent, 0.0, width, height);
-      printViewport(agent, aScreen);
-      //printf("\n");
+      //printViewport(agent, aScreen);
+      //printf("Delta Theta: 0.0\nPos: (%d, %d)\n\n", agent->xPos, agent->yPos);
       free(aScreen);
     }
 
