@@ -8,9 +8,9 @@
 int main(int argc, char *argv[]) {
 
   // Check if we have proper command line arguments
-  if (argc != 2)
+  if (argc != 2 && argc != 3)
   {
-    printf("Usage: %s [track.bmp]\n", argv[0]);
+    printf("Usage: %s [track.bmp] [angle=0 degrees]\n", argv[0]);
     exit(-1);
   }
 
