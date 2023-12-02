@@ -218,7 +218,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
   // Agent view matrix
   double* aScreen;
 
-  for (int i = 0; i < 1000; i++)
+  for (;;)
   {
     aScreen = screenshot(agent, pixelData, width, height);
 
@@ -235,7 +235,7 @@ void simulate(AGENT* agent, PIXEL_LINK* sortedHead, unsigned char* pixelData, in
     agent->angle += deltaTheta;
 
     // If our change in angle is so low, just keep moving forward; else stop and let the model turn
-    if (abs(deltaTheta) < 3.0)
+    if (abs(deltaTheta) < 5.0)
     {
       agent->xPos += (int)((cos(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));
       agent->yPos -= (int)((sin(degreeRadConvert(360 - agent->angle + 90, 0)) * agent->stepSize));

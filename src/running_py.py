@@ -7,6 +7,8 @@ import tensorflow as tf
 from tensorflow import keras
 import random
 
+__DEBUG__ = False
+
 dir_path = '../data/3232'
 data_len = len(os.listdir(dir_path))
 classical_weight_path = '../models/classical/classical3232_weights'
@@ -239,14 +241,23 @@ def start_server(host, port):
 
         #Remove last empty array
         split_data.pop()
+
+        #split_data.reverse()
+
         for i in range(len(split_data)):
-            for b in range(len(split_data)):
+            #split_data[i].reverse()
+            for b in range(len(split_data[i])):
+                if __DEBUG__:
+                    print("{}{}".format("1" if float(split_data[i][b]) > 0.0 else "0", "1" if float(split_data[i][b]) > 0.0 else "0"), end="")
                 split_data[i][b] = [float(split_data[i][b])]
+            if __DEBUG__:
+                print()
+
 
         split_data = np.array(split_data)
         # for i in range(len(split_data)):
         #     print("Length: "+str(len(split_data[i])))
-        print("Prediction: "+str(predict_hybrid(split_data)[0]))
+        print("Prediction: "+str(predict_hybrid(split_data)[0])+"\n")
 
         conn.sendall(str(predict_hybrid(split_data)[0]).encode())
 
